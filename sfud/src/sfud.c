@@ -1,4 +1,25 @@
 /*
+ * ============================================================================
+ * 【中文导读】sfud.c —— SFUD 主流程：设备管理 + 读写擦全流程
+ * ----------------------------------------------------------------------------
+ * 本文件做什么：
+ *   SFUD（串行 Flash 通用驱动库）的核心：sfud_init() 用 JEDEC ID + SFDP 表
+ *   自动识别任意 SPI NOR Flash 型号，然后向上提供统一的读/写/擦除 API。
+ *
+ * 使用入口（三步）：
+ *   1. sfud_init():                    初始化全部 SPI 设备（见 sfud_cfg.h）
+ *   2. sfud_get_device_table():        拿到 flash 设备句柄数组
+ *   3. sfud_read/write/erase():        统一 API 读写擦
+ *
+ * 关键流程精读：
+ *   - sfud_init_device(): 读 JEDEC ID → SFDP 可用则解析参数表，不可用则回退
+ *     到 sfud_flash_def.h 内置参数表 → 决定是否使能 QSPI/Dual 模式
+ *   - sfud_write(): 先擦后写的完整性保护（页编程只能把 1 写成 0）
+ *   - SFUD_WAIT_OP(): 轮询状态寄存器 WIP 位等待操作完成
+ * 注意：SFUD 库本身已有大量中文注释（作者 armink），本导读做导航。
+ * ============================================================================
+ */
+/*
  * This file is part of the Serial Flash Universal Driver Library.
  *
  * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>

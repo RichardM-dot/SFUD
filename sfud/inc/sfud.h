@@ -1,4 +1,11 @@
 /*
+ * 【中文导读】sfud.h —— SFUD 对外 API 总览（B级导读）
+ * 用户只需要认识这里：sfud_init / sfud_get_device_table /
+ * sfud_read / sfud_write / sfud_erase / sfud_erase_write /
+ * sfud_get_info（查容量/块大小）/ sfud_set_4_byte_storage_mode。
+ * 每个函数的中文说明作者已写得很全，直接阅读即可。
+ */
+/*
  * This file is part of the Serial Flash Universal Driver Library.
  *
  * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>
